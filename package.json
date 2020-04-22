@@ -10,11 +10,14 @@
     "type": "git",
     "url": "https://github.com/hyk51594176/redux-model"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -w -c",
     "test": "jest",
-    "release": "npm run test && npm run build && npm publish"
+    "release": "npm run test && npm run build && npm publish --access public"
   },
   "author": "wb-hyk374441@antfin.com",
   "license": "ISC",
