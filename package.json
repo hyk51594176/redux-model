@@ -1,0 +1,52 @@
+{
+  "name": "@hanyk/redux-model",
+  "version": "0.0.1",
+  "description": "redux 模块",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "unpkg": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyk51594176/redux-model"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -w -c",
+    "test": "jest",
+    "release": "npm run test && npm run build && npm publish"
+  },
+  "author": "wb-hyk374441@antfin.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@typescript-eslint/eslint-plugin": "^2.28.0",
+    "@typescript-eslint/parser": "^2.28.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-ali": "^9.0.2",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.4.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^1.32.1",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "memoize-one": "^5.1.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6"
+  },
+  "jest": {
+    "testRegex": "test/(.+)\\.test\\.(jsx?|tsx?)$",
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": ["ts", "js"]
+  }
+}
