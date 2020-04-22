@@ -15,7 +15,6 @@ export default {
       exports: 'named',
       globals: {
         redux: 'Redux',
-        'memoize-one': 'memoizeOne',
         'redux-logger': 'reduxLogger',
       },
     },
@@ -31,7 +30,7 @@ export default {
     },
   ],
   cache: true,
-  external: ['redux', 'redux-logger', 'memoize-one'],
+  external: ['redux', 'redux-logger'],
   plugins: [
     eslint({
       cache: true,
