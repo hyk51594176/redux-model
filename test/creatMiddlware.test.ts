@@ -3,12 +3,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import model1 from './helps/model1';
 import model2 from './helps/model2';
 import model3 from './helps/model3';
-import { RootStore } from './helps/store';
 
 function getStore() {
   const rootModel = createRootModel([model1, model2]);
   const store = applyMiddleware(createMiddleware(rootModel))(createStore)(
-    combineReducers<RootStore>({
+    combineReducers({
       ...rootModel.reducers,
       test3: model3,
     }),

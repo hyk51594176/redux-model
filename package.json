@@ -1,6 +1,6 @@
 {
   "name": "@hanyk/redux-model",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "redux 模块",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -14,6 +14,7 @@
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -w -c",
     "test": "jest",
+    "lint": "eslint --fix  src --ext .ts",
     "release": "npm run test && npm run build && npm publish"
   },
   "author": "wb-hyk374441@antfin.com",
