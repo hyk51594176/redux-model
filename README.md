@@ -108,6 +108,21 @@ export default class App extends React.Component {
   }
 }
 
+
+// hooks用法
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+export default function(){
+
+const { limit, offset, list, total } = useSelector(({ model1 }) => ({ ...model1 }));
+const useDispatch = useDispatch()
+ useEffect(() => {
+    dispatch('model1/getList',{ limit, offset });
+  }, [limit, offset]);
+
+  return // 渲染组件
+}
+
 // api
 
 
