@@ -59,7 +59,7 @@ export default {
     limit: 10
   },
   reducers: {
-    updateList(state, data) {
+    updateState(state, data) {
       return { ...state, ...data };
     }
   },
@@ -69,7 +69,7 @@ export default {
       // actions内可通过commit触发当前namespace下都reducers
       // 触发其他actions或者其他namespace下的reducers和actions 通过dispatch  
       // 根据 dispatch的第一个参数是string类型还是object类型来触发 actions 或者 reducers
-      commit('updateList', {
+      commit('updateState', {
         demandList: res.items,
         total: res.total,
         offset: params.offset,
@@ -99,7 +99,7 @@ export default class App extends React.Component {
     // dispatch 第一个参数为string类型会触发actions 返回一个promise
     await this.props.dispatch('model1/getList', params)
      // dispatch 第一个参数为object类型会触发reducers
-     this.props.dispatch({type: 'model1/updateList', payload: params})
+     this.props.dispatch({type: 'model1/updateState', payload: params})
   }
 
 
