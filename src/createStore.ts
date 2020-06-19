@@ -17,7 +17,7 @@ const defaultOptions = {
   middlewares: [] as Middleware[],
 };
 export default function <S = any> (
-  models: Array<Model<S, Model<S>['namespace']>>,
+  models: Array<Model<S>>,
   options = defaultOptions as Options<S>,
 ) {
   const rootModel = createRootModel<S>(models, options.separator);

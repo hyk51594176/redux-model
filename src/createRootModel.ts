@@ -1,21 +1,21 @@
 import { Model, RootModel } from './interface';
 import { Reducer, AnyAction } from 'redux';
 
-const getReducer = <S>(
-  model: Model<S>,
-  separator: string,
-): Reducer<S[keyof S], AnyAction> => (state = model.state, action) => {
-    if (!model.reducers) return state;
-    const { namespace } = model;
-    if (!namespace) {
-      throw new Error('namespace 为必选项');
-    }
-    const methodName = action.type.replace(`${namespace}${separator}`, '');
-    const fn = model.reducers[methodName];
-    if (typeof fn === 'function') return fn(state, action.payload);
-    return state;
-  };
-export default <S>(models: Array<Model<S, Model<S>['namespace']>>, separator = '/') => models.reduce(
+const getReducer = <S>(model: Model<S>, separator: string): Reducer<S[keyof S], AnyAction> => (
+  state = model.state,
+  action,
+) => {
+  if (!model.reducers) return state;
+  const { namespace } = model;
+  if (!namespace) {
+    throw new Error('namespace 为必选项');
+  }
+  const methodName = action.type.replace(`${namespace}${separator}`, '');
+  const fn = model.reducers[methodName];
+  if (typeof fn === 'function') return fn(state, action.payload);
+  return state;
+};
+export default <S>(models: Array<Model<S>>, separator = '/') => models.reduce(
   (l, r) => ({
     separator,
     state: {
@@ -24,7 +24,7 @@ export default <S>(models: Array<Model<S, Model<S>['namespace']>>, separator = '
     },
     reducers: {
       ...l.reducers,
-      [r.namespace]: getReducer(r, separator),
+      [r.namespace]: getReducer<S>(r, separator),
     },
     actions: {
       ...l.actions,
