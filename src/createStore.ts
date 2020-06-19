@@ -9,6 +9,7 @@ import {
 import createRootModel from './createRootModel';
 import createMiddleware from './createMiddleware';
 import { Options, Model } from './interface';
+import { createLogger } from 'redux-logger';
 
 const defaultOptions = {
   separator: '/',
@@ -21,11 +22,11 @@ export default function <S = any> (
 ) {
   const rootModel = createRootModel<S>(models, options.separator);
   const modelMiddleware = createMiddleware(rootModel);
-  const middlewares = [modelMiddleware];
+  const middlewares = [modelMiddleware, ...(options.middlewares || [])];
   let devtoolsFn;
   if (process.env.NODE_ENV === 'development') {
     middlewares.push(
-      require('redux-logger').createLogger({
+      createLogger({
         level: 'log',
         collapsed: true,
         colors: {
@@ -45,11 +46,10 @@ export default function <S = any> (
 
   return applyMiddleware<Dispatch, S>(
     ...middlewares,
-    ...options.middlewares,
   )(devtoolsFn ? devtoolsFn()(createStore) : createStore)(
     combineReducers<S>({
       ...rootModel.reducers,
-      ...options.reducers,
+      ...(options.reducers || {}),
     }),
   );
 }

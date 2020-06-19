@@ -4,5 +4,5 @@ import createMiddleware from './createMiddleware';
 
 export * from './interface';
 
-export { createRootModel, createMiddleware };
+export { createRootModel, createMiddleware, createStore };
 export default createStore;

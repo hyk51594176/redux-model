@@ -7,6 +7,9 @@ const getReducer = <S>(
 ): Reducer<S[keyof S], AnyAction> => (state = model.state, action) => {
     if (!model.reducers) return state;
     const { namespace } = model;
+    if (!namespace) {
+      throw new Error('namespace 为必选项');
+    }
     const methodName = action.type.replace(`${namespace}${separator}`, '');
     const fn = model.reducers[methodName];
     if (typeof fn === 'function') return fn(state, action.payload);
