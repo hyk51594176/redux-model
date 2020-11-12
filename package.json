@@ -17,7 +17,8 @@
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -w -c",
     "test": "jest",
-    "release": "npm run test && npm run build && npm publish --access public"
+    "lint": "eslint --fix  src --ext .ts",
+    "release": "tnpm run test && tnpm run build && tnpm publish"
   },
   "author": "wb-hyk374441@antfin.com",
   "license": "ISC",

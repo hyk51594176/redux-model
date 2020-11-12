@@ -1,27 +1,31 @@
+/*
+ * @Author: 韩玉凯
+ * @Date: 2020-04-29 15:48:14
+ * @LastEditors: 韩玉凯
+ * @LastEditTime: 2020-09-29 11:29:30
+ * @FilePath: /redux-model/src/createStore.ts
+ */
+
 /* eslint-disable no-param-reassign */
-import {
-  createStore,
-  applyMiddleware,
-  Dispatch,
-  combineReducers,
-  Middleware,
-} from 'redux';
+import { createStore, applyMiddleware, combineReducers, Middleware, Dispatch } from 'redux';
 import createRootModel from './createRootModel';
 import createMiddleware from './createMiddleware';
-import { Options, Model } from './interface';
+import { Options, Model, State } from './interface';
 import { createLogger } from 'redux-logger';
 
 const defaultOptions = {
   separator: '/',
   reducers: {},
+  loadingModel: false,
   middlewares: [] as Middleware[],
 };
+
+
 export default function <S = any> (
-  models: Array<Model<S>>,
-  options = defaultOptions as Options<S>,
+  models: Array<Model<S>>, options = defaultOptions as Options<S>,
 ) {
-  const rootModel = createRootModel<S>(models, options.separator);
-  const modelMiddleware = createMiddleware(rootModel);
+  const rootModel = createRootModel(models, options.separator, options.loadingModel);
+  const modelMiddleware = createMiddleware(rootModel, options.loadingModel);
   const middlewares = [modelMiddleware, ...(options.middlewares || [])];
   let devtoolsFn;
   if (process.env.NODE_ENV === 'development') {
@@ -38,18 +42,13 @@ export default function <S = any> (
         },
       }),
     );
-    devtoolsFn =
-      typeof window === 'object'
-        ? (window as any).__REDUX_DEVTOOLS_EXTENSION__
-        : null;
+    devtoolsFn = typeof window === 'object' ? (window as any).__REDUX_DEVTOOLS_EXTENSION__ : null;
   }
 
-  return applyMiddleware<Dispatch, S>(
-    ...middlewares,
-  )(devtoolsFn ? devtoolsFn()(createStore) : createStore)(
-    combineReducers<S>({
+  return applyMiddleware<Dispatch, State<S>>(...middlewares)(devtoolsFn ? devtoolsFn()(createStore) : createStore)(
+    combineReducers<State<S>>({
       ...rootModel.reducers,
-      ...(options.reducers || {}),
+      ...options.reducers,
     }),
   );
 }

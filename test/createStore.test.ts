@@ -1,3 +1,10 @@
+/*
+ * @Author:
+ * @Date: 2020-04-29 15:48:14
+ * @LastEditors: 韩玉凯
+ * @LastEditTime: 2020-08-14 16:02:47
+ * @FilePath: /redux-model/test/createStore.test.ts
+ */
 import createStore from '../src';
 import model1 from './helps/model1';
 import model2 from './helps/model2';
