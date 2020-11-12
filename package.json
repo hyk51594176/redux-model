@@ -18,7 +18,7 @@
     "dev": "rollup -w -c",
     "test": "jest",
     "lint": "eslint --fix  src --ext .ts",
-    "release": "tnpm run test && tnpm run build && tnpm publish"
+    "release": "npm run test && npm run build && npm publish --access public"
   },
   "author": "wb-hyk374441@antfin.com",
   "license": "ISC",
