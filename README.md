@@ -23,7 +23,8 @@ import createStore from '@hanyk/redux-model';
 const store = createStore([model1],{
   separator: "/", // 分割符号默认‘/’
   reducers: {}, // 需要 通过combineReducers合并等reducer
-  middlewares: [] // 中间件
+  middlewares: [], // 中间件
+  loadingModel: true // 是否启用loading
 });
 
 
