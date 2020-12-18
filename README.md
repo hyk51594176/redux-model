@@ -1,6 +1,5 @@
 # @hanyk/redux-model
 
-redux模块化
 
 ```
 npm install @hanyk/redux-model
