@@ -1,3 +1,10 @@
+/*
+ * @Author: 
+ * @Date: 2020-12-23 18:45:25
+ * @LastEditors: 韩玉凯
+ * @LastEditTime: 2020-12-30 11:54:31
+ * @FilePath: /redux-model/test/helps/model1.ts
+ */
 import { Model } from '../../src/interface';
 import { RootStore } from './store';
 

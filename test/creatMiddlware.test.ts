@@ -1,13 +1,21 @@
-import { createMiddleware, createRootModel } from '../src';
+/*
+ * @Author:
+ * @Date: 2020-12-23 18:45:25
+ * @LastEditors: 韩玉凯
+ * @LastEditTime: 2020-12-30 13:05:03
+ * @FilePath: /redux-model/test/creatMiddlware.test.ts
+ */
+import { createMiddleware, createRootModel, State } from '../src';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import model1 from './helps/model1';
 import model2 from './helps/model2';
 import model3 from './helps/model3';
+import { RootStore } from './helps/store';
 
 function getStore() {
   const rootModel = createRootModel([model1, model2]);
   const store = applyMiddleware(createMiddleware(rootModel))(createStore)(
-    combineReducers({
+    combineReducers<State<RootStore>>({
       ...rootModel.reducers,
       test3: model3,
     }),

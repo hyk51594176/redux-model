@@ -1,8 +1,7 @@
-# @hanyk/redux-model
-
+# @whaleex/redux-model
 
 ```
-npm install @hanyk/redux-model
+npm install @whaleex/redux-model
 ```
 
 ```jsx
