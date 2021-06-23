@@ -43,8 +43,8 @@ export interface RootModel<S = any> {
 }
 
 export interface Options<S> {
-  separator: string;
-  reducers: ReducersMapObject<S, ModelAction>;
+  separator?: string;
+  reducers?: ReducersMapObject<S, ModelAction>;
   middlewares: Array<Middleware<any, S, any>>;
   loadingModel?: boolean;
 }
@@ -56,7 +56,6 @@ export interface Loading<S> {
     };
   } & { globalLoading: 0 };
 }
-
 export type State<S> = S & Loading<S>;
 
 export const defineModel = <S = any, K extends keyof S = any>(data: Model<S, K>) => data;
