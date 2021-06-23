@@ -26,7 +26,7 @@ export interface ActionStoreAPi<S> {
 export interface Actions<S> {
   [key: string]: (store: ActionStoreAPi<S>, data: any) => Promise<any>;
 }
-export interface Model<S = any, K extends keyof S = any> {
+export interface Model<S = any, K extends keyof S = keyof S> {
   namespace: K;
   state: S[K];
   reducers?: Reducers<S[K]>;
@@ -58,4 +58,4 @@ export interface Loading<S> {
 }
 export type State<S> = S & Loading<S>;
 
-export const defineModel = <S = any, K extends keyof S = any>(data: Model<S, K>) => data;
+export const defineModel = <S = any>(data: Model<S>) => data;
