@@ -45,7 +45,7 @@ export interface RootModel<S = any> {
 export interface Options<S> {
   separator?: string;
   reducers?: ReducersMapObject<S, ModelAction>;
-  middlewares: Array<Middleware<any, S, any>>;
+  middlewares?: Array<Middleware<any, S, any>>;
   loadingModel?: boolean;
 }
 
