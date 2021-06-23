@@ -1,5 +1,5 @@
 /*
- * @Author: 
+ * @Author:
  * @Date: 2020-12-23 18:45:25
  * @LastEditors: 韩玉凯
  * @LastEditTime: 2020-12-30 11:54:31
@@ -17,7 +17,7 @@ const Api = {
     });
   },
 };
-const model: Model<RootStore, 'test'> = {
+const model: Model<RootStore> = {
   namespace: 'test',
   state: {
     list: [],

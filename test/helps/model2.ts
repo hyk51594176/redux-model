@@ -10,7 +10,7 @@ const Api = {
     });
   },
 };
-const model: Model<RootStore, 'test2'> = {
+const model: Model<RootStore> = {
   namespace: 'test2',
   state: {
     data: [],
