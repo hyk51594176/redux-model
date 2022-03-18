@@ -1,61 +1,52 @@
-/*
- * @Author:
- * @Date: 2020-08-13 13:57:33
- * @LastEditors: 韩玉凯
- * @LastEditTime: 2020-09-29 14:07:32
- * @FilePath: /redux-model/src/interface.ts
- */
-import { ReducersMapObject, Dispatch, Middleware, Action } from 'redux';
+import { Dispatch, Middleware, ReducersMapObject } from 'redux'
 
 declare module 'redux' {
   export interface Dispatch {
-    (type: string, params?: any): Promise<any>;
+    (type: string, params?: any): Promise<any>
   }
 }
-export interface ModelAction extends Action {
-  payload: any;
+// type MapOReducers<S = any> = {
+//   [K in keyof S]: (state: S, data: Partial<S>) => S
+// }
+interface Reducers<S> {
+  [key: string]: (state: S, data: Partial<S>) => S
 }
-export interface Reducers<S> {
-  [key: string]: (state: S, data: any) => S;
+interface Actions<S, K> {
+  [key: string]: (store: ActionStoreAPi<S, K>, data: any) => Promise<any>
 }
-export interface ActionStoreAPi<S> {
-  dispatch: Dispatch;
-  getState(): S;
-  commit(type: string, payload: any): void;
-}
-export interface Actions<S> {
-  [key: string]: (store: ActionStoreAPi<S>, data: any) => Promise<any>;
+interface ActionStoreAPi<S, K> {
+  dispatch: Dispatch
+  state: K
+  getState(): S
+  commit(type: string, payload: Partial<K>): void
 }
 export interface Model<S = any, K extends keyof S = keyof S> {
-  namespace: K;
-  state: S[K];
-  reducers?: Reducers<S[K]>;
-  actions?: Actions<S>;
+  namespace: K
+  state: S[K]
+  reducers?: Reducers<S[K]>
+  actions?: Actions<S, S[K]>
 }
 
 export interface RootModel<S = any> {
-  separator: string;
-  state: S;
-  reducers: ReducersMapObject<S, ModelAction>;
+  state: S
+  reducers: ReducersMapObject<S>
   actions: {
-    [K in keyof S]: Actions<S>;
-  };
+    [K in keyof S]: Actions<S, K>
+  }
 }
-
 export interface Options<S> {
-  separator?: string;
-  reducers?: ReducersMapObject<S, ModelAction>;
-  middlewares?: Array<Middleware<any, S, any>>;
-  loadingModel?: boolean;
+  reducers?: ReducersMapObject<S>
+  middlewares?: Array<Middleware<any, S>>
+  loadingModel?: boolean
 }
 
-export interface Loading<S> {
+export interface Loading<M extends RootModel> {
   loading: {
-    [K in keyof S]: {
-      [T in keyof Model<S, K>['actions']]: number;
-    };
-  } & { globalLoading: 0 };
+    [K in keyof M]: {
+      [T in keyof Model<M, K>['actions']]: number
+    }
+  } & { globalLoading: 0 }
 }
-export type State<S> = S & Loading<S>;
+export type State<M extends RootModel = RootModel> = M['state'] & Loading<M>
 
-export const defineModel = <S = any>(data: Model<S>) => data;
+export const defineModel = <S, K extends keyof S = keyof S>(data: Model<S, K>) => data

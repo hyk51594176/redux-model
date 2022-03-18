@@ -6,44 +6,55 @@
  * @LastEditTime: 2020-09-29 14:51:39
  * @FilePath: /redux-model/src/createDispatch.ts
  */
-import { RootModel } from './interface';
-import { Dispatch, MiddlewareAPI } from 'redux';
+import { RootModel } from './interface'
+import { Dispatch, MiddlewareAPI } from 'redux'
+import log from './log'
 
-const createCommit = (dispatch: Dispatch, namespace: string, separator: string) => (
-  type: string,
-  payload?: any,
-) => dispatch({ type: `${namespace}${separator}${type}`, payload });
+const createCommit =
+  (
+    dispatch: Dispatch,
+    namespace: string,
+    getState: MiddlewareAPI['getState']
+  ) => (type: string, payload?: any) => {
+    const preState = getState()
+    dispatch({ type: `${namespace}/${type}`, payload })
+    log('同步 commit', `${namespace}/${type}`, preState, getState(), payload)
+  }
 export default <S>(
   { dispatch, getState }: MiddlewareAPI,
   rootModel: RootModel<S>,
-  loadingModel?: boolean,
+  loadingModel?: boolean
 ) => (type: string, payload?: any) => {
-  const [namespace, methodName] = type.split(rootModel.separator);
-  const actions = rootModel.actions[namespace];
-  let result;
+  const [namespace, methodName] = type.split('/')
+  const actions = rootModel.actions[namespace]
+  let result
   if (actions && actions[methodName]) {
+    log('异步 dispatch', `${namespace}/${type}`, getState(), null, payload)
     result = actions[methodName](
       {
-        commit: createCommit(dispatch, namespace, rootModel.separator),
+        commit: createCommit(dispatch, namespace, getState),
         getState,
         dispatch,
+        state: getState()[namespace]
       },
-      payload,
-    );
+      payload
+    )
     if (loadingModel && result instanceof Promise) {
-      const loading = JSON.parse(JSON.stringify(getState().loading));
-      loading.globalLoading++;
-      loading[namespace][methodName]++;
-      dispatch({ type: 'loading/updateLoading', payload: loading });
+      const loading = JSON.parse(JSON.stringify(getState().loading))
+      loading.globalLoading++
+      loading[namespace][methodName]++
       result.finally(() => {
-        const loading1 = JSON.parse(JSON.stringify(getState().loading));
-        loading1.globalLoading--;
-        loading1[namespace][methodName]--;
-        dispatch({ type: 'loading/updateLoading', payload: loading1 });
-      });
+        const loading1 = JSON.parse(JSON.stringify(getState().loading))
+        loading1.globalLoading--
+        loading1[namespace][methodName]--
+        dispatch({ type: 'loading/updateLoading', payload: loading1 })
+      })
+      dispatch({ type: 'loading/updateLoading', payload: loading })
     }
   } else {
-    result = dispatch({ type, payload });
+    const preState = getState()
+    result = dispatch({ type, payload })
+    log('同步 dispatch', type, preState, getState(), payload)
   }
-  return result instanceof Promise ? result : Promise.resolve(result);
-};
+  return result instanceof Promise ? result : Promise.resolve(result)
+}

@@ -7,48 +7,47 @@
  */
 
 /* eslint-disable no-param-reassign */
-import { createStore, applyMiddleware, combineReducers, Middleware, Dispatch } from 'redux';
-import createRootModel from './createRootModel';
-import createMiddleware from './createMiddleware';
-import { Options, Model, State } from './interface';
-import { createLogger } from 'redux-logger';
+import {
+  createStore,
+  applyMiddleware,
+  combineReducers,
+  Middleware,
+  Dispatch
+} from 'redux'
+import createRootModel from './createRootModel'
+import createMiddleware from './createMiddleware'
+import { Options, Model } from './interface'
 
 const defaultOptions = {
-  separator: '/',
   reducers: {},
   loadingModel: false,
-  middlewares: [] as Middleware[],
-};
-
+  middlewares: [] as Middleware[]
+}
 
 export default function <S = any> (
-  models: Array<Model<S>>, options = defaultOptions as Options<S>,
+  models: Array<Model<S>>,
+  options = defaultOptions as Options<S>
 ) {
-  const rootModel = createRootModel(models, options.separator, options.loadingModel);
-  const modelMiddleware = createMiddleware(rootModel, options.loadingModel);
-  const middlewares = [modelMiddleware, ...(options.middlewares || [])];
-  let devtoolsFn;
+  const rootModel = createRootModel(
+    models,
+    options.loadingModel
+  )
+  const modelMiddleware = createMiddleware(rootModel, options.loadingModel)
+  const middlewares = [modelMiddleware, ...(options.middlewares || [])]
+  let devtoolsFn
   if (process.env.NODE_ENV === 'development') {
-    middlewares.push(
-      createLogger({
-        level: 'log',
-        collapsed: true,
-        colors: {
-          title: () => '#409EFF',
-          prevState: () => '#909399',
-          action: () => '#E6A23C',
-          nextState: () => '#67C23A',
-          error: () => '#F56C6C',
-        },
-      }),
-    );
-    devtoolsFn = typeof window === 'object' ? (window as any).__REDUX_DEVTOOLS_EXTENSION__ : null;
+    devtoolsFn =
+      typeof window === 'object'
+        ? (window as any).__REDUX_DEVTOOLS_EXTENSION__
+        : null
   }
 
-  return applyMiddleware<Dispatch, State<S>>(...middlewares)(devtoolsFn ? devtoolsFn()(createStore) : createStore)(
-    combineReducers<State<S>>({
+  return applyMiddleware<Dispatch, typeof rootModel['state']>(...middlewares)(
+    devtoolsFn ? devtoolsFn()(createStore) : createStore
+  )(
+    combineReducers<typeof rootModel['state']>({
       ...rootModel.reducers,
-      ...options.reducers,
-    }),
-  );
+      ...options.reducers
+    })
+  )
 }

@@ -6,18 +6,18 @@
  * @FilePath: /redux-model/src/createMiddleware.ts
  */
 /* eslint-disable @typescript-eslint/ban-types */
-import { RootModel } from './interface';
-import { Middleware, Dispatch } from 'redux';
-import createDispatch from './createDispatch';
+import { RootModel } from './interface'
+import { Middleware, Dispatch } from 'redux'
+import createDispatch from './createDispatch'
 
 export default <S>(
   rootModel: RootModel<S>,
-  loadingModel?: boolean,
+  loadingModel?: boolean
 ): Middleware<{}, S, Dispatch> => {
-  return (middlewareApi) => (next) => (...args) => {
+  return middlewareApi => next => (...args) => {
     if (typeof args[0] === 'string') {
-      return createDispatch(middlewareApi, rootModel, loadingModel)(...args);
+      return createDispatch(middlewareApi, rootModel, loadingModel)(...args)
     }
-    return next(...args);
-  };
-};
+    return next(...args)
+  }
+}
