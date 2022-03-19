@@ -18,7 +18,7 @@ const createCommit =
   ) => (type: string, payload?: any) => {
     const preState = getState()
     dispatch({ type: `${namespace}/${type}`, payload })
-    log('同步 commit', `${namespace}/${type}`, preState, getState(), payload)
+    log('reducers ', `${namespace}/${type}`, payload, preState, getState())
   }
 export default <S>(
   { dispatch, getState }: MiddlewareAPI,
@@ -29,7 +29,7 @@ export default <S>(
   const actions = rootModel.actions[namespace]
   let result
   if (actions && actions[methodName]) {
-    log('异步 dispatch', `${namespace}/${type}`, getState(), null, payload)
+    log('actions ', `${namespace}/${type}`, payload)
     result = actions[methodName](
       {
         commit: createCommit(dispatch, namespace, getState),
@@ -54,7 +54,7 @@ export default <S>(
   } else {
     const preState = getState()
     result = dispatch({ type, payload })
-    log('同步 dispatch', type, preState, getState(), payload)
+    log('reducers ', type, payload, preState, getState(),)
   }
   return result instanceof Promise ? result : Promise.resolve(result)
 }

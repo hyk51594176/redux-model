@@ -28,7 +28,7 @@ export default function <S = any> (
   models: Array<Model<S>>,
   options = defaultOptions as Options<S>
 ) {
-  const rootModel = createRootModel(
+  const rootModel = createRootModel<S>(
     models,
     options.loadingModel
   )

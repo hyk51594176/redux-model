@@ -5,9 +5,7 @@ declare module 'redux' {
     (type: string, params?: any): Promise<any>
   }
 }
-// type MapOReducers<S = any> = {
-//   [K in keyof S]: (state: S, data: Partial<S>) => S
-// }
+
 interface Reducers<S> {
   [key: string]: (state: S, data: Partial<S>) => S
 }
@@ -20,7 +18,7 @@ interface ActionStoreAPi<S, K> {
   getState(): S
   commit(type: string, payload: Partial<K>): void
 }
-export interface Model<S = any, K extends keyof S = keyof S> {
+export interface Model<S = any, K extends keyof S = any > {
   namespace: K
   state: S[K]
   reducers?: Reducers<S[K]>
@@ -49,4 +47,4 @@ export interface Loading<M extends RootModel> {
 }
 export type State<M extends RootModel = RootModel> = M['state'] & Loading<M>
 
-export const defineModel = <S, K extends keyof S = keyof S>(data: Model<S, K>) => data
+export const defineModel = <S, K extends keyof S>(data: Model<S, K>) => data

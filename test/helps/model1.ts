@@ -1,3 +1,4 @@
+import { defineModel } from './../../src/interface';
 /*
  * @Author:
  * @Date: 2020-12-23 18:45:25
@@ -5,19 +6,18 @@
  * @LastEditTime: 2020-12-30 11:54:31
  * @FilePath: /redux-model/test/helps/model1.ts
  */
-import { Model } from '../../src/interface';
 import { RootStore } from './store';
 
 const Api = {
   getList(data: any[]) {
-    return new Promise((reslove) => {
+    return new Promise<any[]>((reslove) => {
       setTimeout(() => {
         reslove(data);
       }, 100);
     });
   },
 };
-const model: Model<RootStore> = {
+const model = defineModel<RootStore, 'test'>({
   namespace: 'test',
   state: {
     list: [],
@@ -25,33 +25,33 @@ const model: Model<RootStore> = {
     list3: [],
   },
   reducers: {
-    updateList(state, data: any[]) {
-      return { ...state, list: data };
+    updateList(state, { list }) {
+      return { ...state, list };
     },
-    updateList2(state, data) {
-      return { ...state, list2: data };
+    updateList2(state, { list2 }) {
+      return { ...state, list2 };
     },
-    updateList3(state, data) {
-      return { ...state, list3: data };
+    updateList3(state, { list3 }) {
+      return { ...state, list3 };
     },
   },
   actions: {
     async setList({ commit }, data: any[]) {
       const list = await Api.getList(data);
-      commit('updateList', list);
+      commit('updateList', { list });
       return data;
     },
     async setList2({ commit }, data: any[]) {
       const list = await Api.getList(data);
-      commit('updateList2', list);
+      commit('updateList2', { list });
       return data;
     },
     async setList3({ commit }, data: any[]) {
       const list = await Api.getList(data);
-      commit('updateList3', list);
+      commit('updateList3', { list });
       return data;
     },
   },
-};
+});
 
 export default model;
