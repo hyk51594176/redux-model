@@ -7,7 +7,7 @@ declare module 'redux' {
 }
 
 interface Reducers<S> {
-  [key: string]: (state: S, data: Partial<S>) => S
+  [key: string]: (state: S, data: any) => S
 }
 interface Actions<S, K> {
   [key: string]: (store: ActionStoreAPi<S, K>, data: any) => Promise<any>

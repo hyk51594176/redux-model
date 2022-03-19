@@ -31,8 +31,8 @@ describe('创建store', () => {
 describe('数据更新', () => {
   it('dispatch 同步更新store ', () => {
     const store = createStore([model1]);
-    store.dispatch('test/updateList', ['a', 'b']);
-    store.dispatch('test/updateList2', [3, 4]);
+    store.dispatch('test/updateList', { list: ['a', 'b'] });
+    store.dispatch('test/updateList2', { list2: [3, 4] });
     const { list, list2 } = store.getState().test;
     expect(list).toEqual(['a', 'b']);
     expect(list2).toEqual([3, 4]);

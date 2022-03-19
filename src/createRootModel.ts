@@ -11,7 +11,9 @@ import { Reducer } from 'redux'
 
 const getReducer =
   <S>(model: Model<S>): Reducer<S[keyof S]> => (state = model.state, { type, payload }) => {
-    if (!model.reducers) return state
+    if (!model.reducers) {
+      return state
+    }
     const { namespace } = model
     if (namespace === 'loading') {
       throw new Error('namespace ===> loading 为保留字段请勿使用')
@@ -44,7 +46,9 @@ export default <S>(models: Array<Model<S>>, loadingModel?: boolean) => {
     } as RootModel<S>
   )
   if (loadingModel) {
-    (rootModel.state as any).loading = Object.entries(rootModel.actions || {}).reduce(
+    (rootModel.state as any).loading = Object.entries(
+      rootModel.actions || {}
+    ).reduce(
       (obj, [namespace, value]) => ({
         ...obj,
         [namespace]: Object.keys(value as any).reduce(

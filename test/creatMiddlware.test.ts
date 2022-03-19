@@ -33,8 +33,8 @@ describe('middleware', () => {
   });
   it('dispatch 同步更新store', () => {
     const store = getStore();
-    store.dispatch({ type: 'test/updateList', payload: ['a', 'b'] });
-    store.dispatch({ type: 'test/updateList2', payload: [3, 4] });
+    store.dispatch({ type: 'test/updateList', payload: { list: ['a', 'b'] } });
+    store.dispatch({ type: 'test/updateList2', payload: { list2: [3, 4] } });
     const { list, list2 } = store.getState().test;
     expect(list).toEqual(['a', 'b']);
     expect(list2).toEqual([3, 4]);

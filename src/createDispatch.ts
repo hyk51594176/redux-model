@@ -29,7 +29,7 @@ export default <S>(
   const actions = rootModel.actions[namespace]
   let result
   if (actions && actions[methodName]) {
-    log('actions ', `${namespace}/${type}`, payload)
+    log('actions ', type, payload)
     result = actions[methodName](
       {
         commit: createCommit(dispatch, namespace, getState),

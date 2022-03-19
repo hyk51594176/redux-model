@@ -42,13 +42,13 @@ const model = defineModel<RootStore, 'test'>({
       return data;
     },
     async setList2({ commit }, data: any[]) {
-      const list = await Api.getList(data);
-      commit('updateList2', { list });
+      const list2 = await Api.getList(data);
+      commit('updateList2', { list2 });
       return data;
     },
     async setList3({ commit }, data: any[]) {
-      const list = await Api.getList(data);
-      commit('updateList3', { list });
+      const list3 = await Api.getList(data);
+      commit('updateList3', { list3 });
       return data;
     },
   },
