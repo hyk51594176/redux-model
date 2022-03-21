@@ -28,6 +28,8 @@ export default <S>(
   const [namespace, methodName] = type.split('/')
   const actions = rootModel.actions[namespace]
   let result
+  const preState = getState()
+
   if (actions && actions[methodName]) {
     log('actions ', type, payload)
     result = actions[methodName](
@@ -39,22 +41,23 @@ export default <S>(
       },
       payload
     )
-    if (loadingModel && result instanceof Promise) {
-      const loading = JSON.parse(JSON.stringify(getState().loading))
-      loading.globalLoading++
-      loading[namespace][methodName]++
-      result.finally(() => {
-        const loading1 = JSON.parse(JSON.stringify(getState().loading))
-        loading1.globalLoading--
-        loading1[namespace][methodName]--
-        dispatch({ type: 'loading/updateLoading', payload: loading1 })
-      })
-      dispatch({ type: 'loading/updateLoading', payload: loading })
+    if (result instanceof Promise) {
+      if (loadingModel) {
+        const loading = JSON.parse(JSON.stringify(getState().loading))
+        loading.globalLoading++
+        loading[namespace][methodName]++
+        dispatch('loading/updateLoading', loading)
+        result.finally(() => {
+          const loading1 = JSON.parse(JSON.stringify(getState().loading))
+          loading1.globalLoading--
+          loading1[namespace][methodName]--
+          dispatch('loading/updateLoading', loading1)
+        })
+      }
     }
   } else {
-    const preState = getState()
     result = dispatch({ type, payload })
-    log('reducers ', type, payload, preState, getState(),)
+    log('reducers ', type, payload, preState, getState())
   }
   return result instanceof Promise ? result : Promise.resolve(result)
 }
