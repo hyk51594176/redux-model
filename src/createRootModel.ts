@@ -24,12 +24,12 @@ const getReducer =
     return state
   }
 
-export default <S>(models: Array<Model<S>>, loadingModel?: boolean) => {
+export default <S>(models: Array<Model<S>>, loadingModel?: boolean, initState: S = {} as S) => {
   const rootModel = models.reduce(
     (l, r) => ({
       state: {
         ...l.state,
-        [r.namespace]: r.state
+        [r.namespace]: initState[r.namespace] ?? r.state
       },
       reducers: {
         ...l.reducers,

@@ -30,7 +30,8 @@ export default function <S = any> (
 ) {
   const rootModel = createRootModel<S>(
     models,
-    options.loadingModel
+    options.loadingModel,
+    options.initState
   )
   const modelMiddleware = createMiddleware(rootModel, options.loadingModel)
   const middlewares = [modelMiddleware, ...(options.middlewares || [])]

@@ -18,7 +18,7 @@ interface ActionStoreAPi<S, K> {
   getState(): S
   commit(type: string, payload: Partial<K>): void
 }
-export interface Model<S = any, K extends keyof S = any > {
+export interface Model<S = any, K extends keyof S = any> {
   namespace: K
   state: S[K]
   reducers?: Reducers<S[K]>
@@ -35,7 +35,8 @@ export interface RootModel<S = any> {
 export interface Options<S> {
   reducers?: ReducersMapObject<S>
   middlewares?: Array<Middleware<any, S>>
-  loadingModel?: boolean
+  loadingModel?: boolean,
+  initState?: S
 }
 
 export interface Loading<M extends RootModel> {
