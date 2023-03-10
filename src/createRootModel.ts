@@ -26,20 +26,23 @@ const getReducer =
 
 export default <S>(models: Array<Model<S>>, loadingModel?: boolean, initState: S = {} as S) => {
   const rootModel = models.reduce(
-    (l, r) => ({
-      state: {
-        ...l.state,
-        [r.namespace]: initState[r.namespace] ?? r.state
-      },
-      reducers: {
-        ...l.reducers,
-        [r.namespace]: getReducer<S>(r)
-      },
-      actions: {
-        ...l.actions,
-        [r.namespace]: r.actions
+    (l, r) => {
+      r.state = initState[r.namespace] ?? r.state
+      return {
+        state: {
+          ...l.state,
+          [r.namespace]: r.state
+        },
+        reducers: {
+          ...l.reducers,
+          [r.namespace]: getReducer<S>(r)
+        },
+        actions: {
+          ...l.actions,
+          [r.namespace]: r.actions
+        }
       }
-    }),
+    },
     {
       state: {},
       reducers: {}
